@@ -1,10 +1,5 @@
-# A lightweight webserver to run permanently on the Pi as a systemd service - wol_server.service - in /lib/systemd/system/
-# Enabled with sudo systemctl enable wol_server.service
-# Requests trigger the sending of the magic packet.
-# Any errors are returned
-
 from bottle import route, get, run, template, static_file
-import os, subprocess
+import os, subprocess, time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,20 +11,34 @@ ROOT_DIR = os.getenv('ROOT_DIR')
 HOST = os.getenv('HOST')
 ENTRYPOINT = os.getenv('ENTRYPOINT')
 
-@route(ENTRYPOINT)
-def index():
-  result = subprocess.run(
-    ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS], 
+def run_bash(command_list):
+  return subprocess.run(
+    command_list, 
     shell=False, 
     close_fds=True, 
     capture_output=True
   )
 
-  if result.returncode != 0:
-  # if there was an error, we assume the traceback was printed to stderr
-    return template(
-      '<b>There was an error:\n\n{{error}}</b>!', error=result.stderr.decode("utf-8")
-    )
+@route(ENTRYPOINT)
+def index():
+
+  commands = {
+    'load_driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
+    'sleep' : ['sleep', '0.2'],
+    'send_magic_packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
+    'sleep_again' : ['sleep', '1'],
+    'unload_driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
+  }
+
+  for command in list(commands.values()):
+    result = run_bash(command)
+
+    # If there was an error, we assume the traceback was printed to stderr
+    if result.returncode != 0:
+      return template(
+        '<b>There was an error:\n\n{{error}}</b>!', error=result.stderr.decode("utf-8")
+      )
+
   return '<b>Magic packet sent</b>'
 
 @get('/media/:path#.+#')
