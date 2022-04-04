@@ -24,7 +24,7 @@ def index():
 
   commands = {
     'load_driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
-    'sleep' : ['sleep', '0.2'],
+    'sleep' : ['sleep', '5'], #this has to be quite long
     'send_magic_packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
     'sleep_again' : ['sleep', '1'],
     'unload_driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
