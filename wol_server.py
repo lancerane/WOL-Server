@@ -1,5 +1,5 @@
 from bottle import route, get, run, template, static_file
-import os, subprocess, time
+import os, subprocess
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,11 +23,11 @@ def run_bash(command_list):
 def index():
 
   commands = {
-    '1. load driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
-    '2. wait' : ['sleep', '5'], #this has to be quite long
-    '3. send magic packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
-    '4. wait again' : ['sleep', '1'],
-    '5. unload driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
+    '(1) load driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
+    '(2) wait' : ['sleep', '5'], #this has to be quite long
+    '(3) send magic packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
+    '(4) wait again' : ['sleep', '1'],
+    '(5) unload driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
   }
 
   for command_str in list(commands.keys()):
