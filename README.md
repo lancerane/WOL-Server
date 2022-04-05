@@ -1,10 +1,15 @@
 # WOL-Server
-A lightweight webserver to run as a systemd service, eg on a raspberry pi, connected via eth cable to a main PC.
+A lightweight Bottle webserver to run as a systemd service, eg on a raspberry pi, connected via eth cable to a main PC.
 HTML Requests trigger the sending of the magic packet via ethernet to wake the PC.
 The ethernet driver is unloaded in between requests, to save power.
 To make the request, the client must have access to the local network, perhaps through a VPN (https://www.wireguard.com/).
 
 ## Usage
+Install dependencies
+```
+pip install -r requirements.txt
+```
+
 Create /lib/systemd/system/wol_server.service to point to wol_server.py, eg:
 ```
 [Unit]

@@ -23,20 +23,22 @@ def run_bash(command_list):
 def index():
 
   commands = {
-    'load_driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
-    'sleep' : ['sleep', '5'], #this has to be quite long
-    'send_magic_packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
-    'sleep_again' : ['sleep', '1'],
-    'unload_driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
+    '1. load driver' : ['sudo', 'modprobe', '-i', 'enc28j60'],
+    '2. wait' : ['sleep', '5'], #this has to be quite long
+    '3. send magic packet' : ['sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS],
+    '4. wait again' : ['sleep', '1'],
+    '5. unload driver' : ['sudo', 'modprobe', '-r', 'enc28j60']
   }
 
-  for command in list(commands.values()):
-    result = run_bash(command)
+  for command_str in list(commands.keys()):
+    result = run_bash(commands.get(command_str))
 
     # If there was an error, we assume the traceback was printed to stderr
     if result.returncode != 0:
       return template(
-        '<b>There was an error:\n\n{{error}}</b>!', error=result.stderr.decode("utf-8")
+        '<b>There was an error with step {{command}}:\n\n{{error}}</b>!', 
+        command=command_str,
+        error=result.stderr.decode("utf-8")
       )
 
   return '<b>Magic packet sent</b>'
