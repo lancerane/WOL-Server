@@ -32,7 +32,8 @@ def index():
 
   for command_str in list(commands.keys()):
     result = run_bash(
-      commands.get(command_str))
+      commands.get(command_str)
+    )
 
     # If there was an error, we assume the traceback was printed to stderr
     if result.returncode != 0:
