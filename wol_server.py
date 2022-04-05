@@ -31,12 +31,13 @@ def index():
   }
 
   for command_str in list(commands.keys()):
-    result = run_bash(commands.get(command_str))
+    result = run_bash(
+      commands.get(command_str))
 
     # If there was an error, we assume the traceback was printed to stderr
     if result.returncode != 0:
       return template(
-        '<b>There was an error with step {{command}}:\n\n{{error}}</b>!', 
+        '<b>There was an error with step {{command}}:\n{{error}}</b>!', 
         command=command_str,
         error=result.stderr.decode("utf-8")
       )
