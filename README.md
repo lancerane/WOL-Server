@@ -4,10 +4,14 @@ HTML Requests trigger the sending of the magic packet via ethernet to wake the P
 The ethernet driver is unloaded in between requests, to save power.
 To make the request, the client must have access to the local network, perhaps through a VPN (https://www.wireguard.com/).
 
-## Usage
+## On the server
 Install dependencies
 ```
 pip install -r requirements.txt
+```
+
+```
+sudo apt-get update && sudo apt-get install etherwake
 ```
 
 Create /lib/systemd/system/wol_server.service to point to wol_server.py, eg:
@@ -28,13 +32,9 @@ User=<USER>
 WantedBy=multi-user.target
 ```
 
-### Start the server
+### Start the service and enable load on startup
 ```
 sudo systemctl start wol_server.service
-```
-
-### Load on startup 
-```
 sudo systemctl enable wol_server.service
 ```
 
@@ -43,3 +43,14 @@ sudo systemctl enable wol_server.service
 sudo systemctl stop wol_server.service
 ```
 
+## On the receiving PC 
+- Enable WOL in the BIOS. May also need to disable fast boot and ErP
+- Enable magic packet reception - on Ubuntu:
+```
+sudo ethtool -s <NIC> wol g
+```
+Note that this may need to be run at every boot.
+- May additionally need to update ethernet drivers
+
+## On the client
+Go to http://192.x.x.x:<PORT>/<ENTRYPOINT> to send the packet.
