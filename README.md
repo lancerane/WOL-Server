@@ -5,16 +5,24 @@ The ethernet driver is unloaded in between requests, to save power.
 To make the request, the client must have access to the local network, perhaps through a VPN (https://www.wireguard.com/).
 
 ## On the server
-Install dependencies
+### Install dependencies
 ```
 pip install -r requirements.txt
-```
-
-```
 sudo apt-get update && sudo apt-get install etherwake
 ```
+### Set up the environment 
+Create a local .env file:
+```
+PORT=...
+MAC_ADDRESS=...[of the receiving PC]
+INTERFACE=...[eg, eth0]
+ROOT_DIR=...[abs path to the favicon enclosing dir]
+ENTRYPOINT=...
+ETH_DRIVER=...[as listed on lsmod]
+```
 
-Create /lib/systemd/system/wol_server.service to point to wol_server.py, eg:
+### Create the service
+/lib/systemd/system/wol_server.service to point to wol_server.py, eg:
 ```
 [Unit]
 Description=WOL bottle webserver 
