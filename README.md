@@ -53,4 +53,4 @@ Note that this may need to be run at every boot.
 - May additionally need to update ethernet drivers
 
 ## On the client
-Go to http://192.x.x.x:<PORT>/<ENTRYPOINT> to send the packet.
+Go to http://192.x.x.x:PORT/ENTRYPOINT to send the packet.

@@ -8,7 +8,6 @@ PORT = int(os.getenv('PORT'))
 INTERFACE = os.getenv('INTERFACE')
 MAC_ADDRESS = os.getenv('MAC_ADDRESS')
 ROOT_DIR = os.getenv('ROOT_DIR')
-HOST = os.getenv('HOST')
 ENTRYPOINT = os.getenv('ENTRYPOINT')
 ETH_DRIVER = os.getenv('ETH_DRIVER')
 
@@ -25,7 +24,7 @@ def index():
 
   commands = {
     '(1) load driver': [ 'sudo', 'modprobe', '-i', ETH_DRIVER ],
-    '(2) wait': [ 'sleep', '5' ], #this has to be quite long
+    '(2) wait': [ 'sleep', '5' ], #need to wait a while
     '(3) send magic packet': [ 'sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS ],
     '(4) wait again': [ 'sleep', '1' ],
     '(5) unload driver': [ 'sudo', 'modprobe', '-r', ETH_DRIVER ]
@@ -54,4 +53,4 @@ def server_static(path):
 def get_favicon():
   return server_static('favicon.ico')
 
-run(host=HOST, port=PORT)
+run(host='0.0.0.0', port=PORT)
