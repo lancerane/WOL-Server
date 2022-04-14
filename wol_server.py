@@ -24,7 +24,7 @@ def index():
 
   commands = {
     '(1) load driver': [ 'sudo', 'modprobe', '-i', ETH_DRIVER ],
-    '(2) wait': [ 'sleep', '5' ], #need to wait a while
+    '(2) wait': [ 'sleep', '2' ], #need to wait a while
     '(3) send magic packet': [ 'sudo', 'etherwake', '-i', INTERFACE, MAC_ADDRESS ],
     '(4) wait again': [ 'sleep', '1' ],
     '(5) unload driver': [ 'sudo', 'modprobe', '-r', ETH_DRIVER ]
